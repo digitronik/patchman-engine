@@ -27,7 +27,6 @@ type PostgreSQLConfig struct {
 	User     string
 	Database string
 	Passwd   string
-	SSLMode  string
 
 	// Additional params.
 	Timeout               string
@@ -73,7 +72,6 @@ func loadEnvPostgreSQLConfig() *PostgreSQLConfig {
 		Port:     port,
 		Database: utils.Getenv("DB_NAME", "FILL"),
 		Passwd:   utils.Getenv("DB_PASSWD", "FILL"),
-		SSLMode:  utils.Getenv("DB_SSLMODE", "FILL"),
 
 		Timeout:               "60s",
 		ReadTimeout:           "60s",
@@ -87,6 +85,7 @@ func loadEnvPostgreSQLConfig() *PostgreSQLConfig {
 
 // create "data source" config string needed for database connection opening
 func dataSourceName(dbConfig *PostgreSQLConfig) string {
-	return fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=%s",
-		dbConfig.Host, dbConfig.Port, dbConfig.User, dbConfig.Database, dbConfig.Passwd, dbConfig.SSLMode)
+	return fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=require",
+		dbConfig.Host, dbConfig.Port, dbConfig.User, dbConfig.Database, dbConfig.Passwd)
+	// timeoutParams(dbConfig))
 }
