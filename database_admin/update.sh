@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 export PGHOST=$DB_HOST
 export PGUSER=$DB_USER
@@ -10,8 +10,6 @@ export PGSSLMODE=$DB_SSLMODE
 WAIT_FOR_EMPTY_DB=1 ./scripts/wait-for-services.sh
 
 DB_INITIALIZED=$(psql -c "\d" | grep schema_migrations | wc -l)
-
-set -e -o pipefail
 
 # we cain either create the database from scratch, or upgrade running database
 if [[ $DB_INITIALIZED == "0" ]]; then

@@ -15,11 +15,6 @@ func MigrateUp(sourceURL, databaseURL string) {
 
 	m.Log = logger{}
 	err = m.Up()
-	if err != nil && err.Error() == "no change" {
-		fmt.Println("no change")
-		return
-	}
-
 	if err != nil {
 		panic(err)
 	}
