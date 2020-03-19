@@ -45,9 +45,9 @@ func ApplySort(c *gin.Context, tx *gorm.DB, fieldExprs database.AttrMap) (*gorm.
 	// We sort by a column expression and not the column name. The column expression is retrieved from fieldExprs
 	for _, enteredField := range fields {
 		if strings.HasPrefix(enteredField, "-") && allowedFieldSet[enteredField[1:]] { //nolint:gocritic
-			tx = tx.Order(fmt.Sprintf("%s DESC", fieldExprs[enteredField[1:]].Query))
+			tx = tx.Order(fmt.Sprintf("%v DESC", fieldExprs[enteredField[1:]]))
 		} else if allowedFieldSet[enteredField] {
-			tx = tx.Order(fmt.Sprintf("%s ASC", fieldExprs[enteredField].Query))
+			tx = tx.Order(fmt.Sprintf("%v ASC", fieldExprs[enteredField]))
 		} else {
 			// We have not found any matches in allowed fields, return an error
 			return nil, nil, errors.Errorf("Invalid sort field: %v", enteredField)

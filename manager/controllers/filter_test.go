@@ -14,10 +14,6 @@ var testFilters = []string{
 	"between:12,13",
 }
 
-func dummyParser(v string) (interface{}, error) {
-	return v, nil
-}
-
 func TestFilterParse(t *testing.T) {
 	operators := []string{
 		"eq", "in", "gt", "lt", "between",
@@ -39,7 +35,6 @@ func TestFilterParse(t *testing.T) {
 	}
 }
 
-// nolint: govet
 func TestFilterToSql(t *testing.T) {
 	queries := []string{
 		"test = ? ",
@@ -52,15 +47,12 @@ func TestFilterToSql(t *testing.T) {
 	for i, f := range testFilters {
 		filter, err := ParseFilterValue(f)
 		assert.Equal(t, nil, err)
-
-		attrMap := database.AttrMap{"test": {"test", dummyParser}}
-		query, _, err := filter.ToWhere("test", attrMap)
+		query, _, err := filter.ToWhere("test", database.AttrMap{"test": "test"})
 		assert.Equal(t, nil, err)
 		assert.Equal(t, queries[i], query)
 	}
 }
 
-// nolint: govet
 func TestFilterToSqlAdvanced(t *testing.T) {
 	queries := []string{
 		"(NOT test) = ? ",
@@ -73,8 +65,7 @@ func TestFilterToSqlAdvanced(t *testing.T) {
 	for i, f := range testFilters {
 		filter, err := ParseFilterValue(f)
 		assert.Equal(t, nil, err)
-		attrMap := database.AttrMap{"test": {"(NOT test)", dummyParser}}
-		query, _, err := filter.ToWhere("test", attrMap)
+		query, _, err := filter.ToWhere("test", database.AttrMap{"test": "(NOT test)"})
 		assert.Equal(t, nil, err)
 		assert.Equal(t, queries[i], query)
 	}
