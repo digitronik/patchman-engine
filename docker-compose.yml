@@ -1,28 +1,17 @@
 version: '3'
 
 services:
+
   db:
     container_name: db
-    image: postgres:11.5
+    build:
+      context: .
+      dockerfile: database/Dockerfile.centos
     ports:
       - 5432:5432
     env_file:
+      - ./conf/common.env
       - ./conf/database.env
-
-  db_setup:
-    container_name: db_setup
-    build:
-      context: .
-      dockerfile: Dockerfile.centos
-    env_file:
-      - ./conf/database.env
-    command: /database/migrate.sh
-    depends_on:
-      - db
-    volumes:
-      - ./:/go/src/app
-    security_opt:
-      - label=disable
 
   db_feed:
     container_name: db_feed
