@@ -11,8 +11,5 @@ RUN yum install -y openssl -y && \
 
 USER postgres
 
-# copy custom config to enable SSL connections
-ADD /dev/database/custom.conf /opt/app-root/src/postgresql-cfg/
-
-# copy config to enforce SSL connections to ensure all clients use SSL
-ADD /dev/database/pg_hba.conf /opt/app-root/
+ADD /database/custom.conf /opt/app-root/src/postgresql-cfg/
+ADD /database/pg_hba.conf /opt/app-root/
