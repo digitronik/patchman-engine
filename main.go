@@ -2,7 +2,6 @@ package main
 
 import (
 	"app/base/core"
-	"app/database_admin"
 	"app/evaluator"
 	"app/listener"
 	"app/manager"
@@ -27,9 +26,6 @@ func main() {
 			return
 		case "vmaas_sync":
 			vmaas_sync.RunVmaasSync()
-			return
-		case "migrate":
-			database_admin.MigrateUp(os.Args[2], os.Args[3])
 			return
 		}
 	}
